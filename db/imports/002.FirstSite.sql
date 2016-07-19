@@ -1,0 +1,2 @@
+insert into site (site_name, url, active_ind) values ('Test Site', 'http://localhost/whatup.php', 1);
+insert into site (site_name, url, active_ind) values ('idevcode.com', 'http://idevcode.com/whatup.txt', 1);
