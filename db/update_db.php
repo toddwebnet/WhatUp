@@ -4,5 +4,12 @@ require_once "includes/helpers.php";
 require_once "includes/mysql.class.php";
 require_once "includes/UpdateDb.class.php";
 
-$x = new UpdateDb(new Mysql());
+
+$hulkSmash = false;
+if (isset($argv[1])) {
+    if ($argv[1] == "smash") {
+        $hulkSmash = true;
+    }
+}
+$x = new UpdateDb(new Mysql(), $hulkSmash);
 

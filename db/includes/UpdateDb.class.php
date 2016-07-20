@@ -4,11 +4,13 @@ class UpdateDb
 {
     private $dbh;
 
-    public function __construct($dbh)
+    public function __construct($dbh, $hulkSmash = false)
     {
         $this->dbh = $dbh;
 
-        //$this->hulkSmash();
+        if ($hulkSmash) {
+            $this->hulkSmash();
+        }
 
         $this->processList($this->getFileList(), $this->getFilesRan());
     }
