@@ -1,5 +1,6 @@
 <?php
 
+
 class Testing
 {
     private $dbh;
@@ -7,7 +8,9 @@ class Testing
     public function __construct($dbh)
     {
         $this->dbh = $dbh;
-        if ($this->checkIfLive()) {
+        $checkIfLive = $this->checkIfLive();
+        $this->insertTestRun($checkIfLive);
+        if ($checkIfLive) {
             $this->processSites($this->getSites());
         }
     }
@@ -16,50 +19,70 @@ class Testing
     {
         print "Testing Sites:\n";
         foreach ($sites as $site) {
-            print "  " . $site["site_name"] . " - ";
-            $ts1 = microtime_float();
-            $content = gimmie_curl($site['url']);
-            $ts2 = microtime_float();
-            $ts = (int)round(1000 * ($ts2 - $ts1), 0);
-            $passFail = (strpos("pass", $content) === false) ? 0 : 1;
-            print ($passFail == 1) ? "pass" : "fail";
-            print " - " . $ts . "\n";
-            $this->insertPing($site["site_id"], $passFail, $ts);
+            print "  " . $site["address"] . " - ";
+            $passFail=  $this->pingDomain( $site["address"]);
+            print ($passFail >= 0) ? "pass" : "fail";
+            print "\n";
+            $this->insertPing($site["site_id"], $passFail);
         }
     }
 
-    private function insertPing($siteId, $passFail, $ts)
+    private function insertPing($siteId, $passFail)
     {
-        $sql = "INSERT INTO site_ping (site_id, pass_fail, time_to_load, ping_ts) VALUES (?,?,?,NOW())";
-        $params = array($siteId, $passFail, $ts);
+        $sql = "INSERT INTO site_ping (site_id, test_value, ping_ts) VALUES (?,?,NOW())";
+        $params = array($siteId, $passFail);
         $this->dbh->exec($sql, $params);
     }
 
     private function getSites()
     {
-        $sql = "SELECT site_id, site_name, url FROM site WHERE active_ind = 1";
+        $sql = "SELECT site_id, address FROM site WHERE check_type='p' and is_active = 1";
         $sites = $this->dbh->query($sql);
         return $sites;
     }
 
     private function checkIfLive()
     {
-        return true;
         $sites = $this->getLiveCheckSites();
         foreach ($sites as $site) {
-            print $site['url'] . "\n\n";
-            $content = gimmie_curl($site['url']);
+            print $site['address'] . "\n\n";
+            $content = gimmie_curl($site['address']);
             if (strpos(strtolower($content), "html") > 0) {
-                return true;
+                return 1;
             }
         }
-        return false;
+        return 0;
     }
 
     private function getLiveCheckSites()
     {
-        $sql = "SELECT site_id, site_name, url FROM local_upcheck_site WHERE active_ind = 1";
+        $sql = "SELECT site_id, address FROM site where check_type = 'l' and is_active = 1";
         $sites = $this->dbh->query($sql);
         return $sites;
     }
+
+    private function pingDomain($domain)
+    {
+        $starttime = microtime(true);
+        $errno = null;
+        $errstr = null;
+        $file = fsockopen($domain, 80, $errno, $errstr, 10);
+        $stoptime = microtime(true);
+        $status = 0;
+        if (!$file) $status = -1;  // Site is down
+        else {
+            fclose($file);
+            $status = ($stoptime - $starttime) * 1000;
+            $status = floor($status);
+        }
+        return $status;
+    }
+
+    private function insertTestRun($upDown)
+    {
+        $sql = "insert into test_run (up_down, run_ts) values (?, NOW())";
+        $params = array($upDown);
+        $this->dbh->exec($sql, $params);
+    }
+
 }

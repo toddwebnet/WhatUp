@@ -1,5 +1,5 @@
 <?php
-require_once("db_config.php");
+require_once("../config.php");
 require_once "includes/helpers.php";
 require_once "includes/mysql.class.php";
 require_once "includes/UpdateDb.class.php";
