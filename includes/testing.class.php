@@ -1,9 +1,8 @@
 <?php
 
 
-class Testing
+class Testing extends WhatupDb
 {
-    private $dbh;
 
     public function __construct($dbh)
     {
@@ -27,20 +26,6 @@ class Testing
         }
     }
 
-    private function insertPing($siteId, $passFail)
-    {
-        $sql = "INSERT INTO site_ping (site_id, test_value, ping_ts) VALUES (?,?,NOW())";
-        $params = array($siteId, $passFail);
-        $this->dbh->exec($sql, $params);
-    }
-
-    private function getSites()
-    {
-        $sql = "SELECT site_id, address FROM site WHERE check_type='p' and is_active = 1";
-        $sites = $this->dbh->query($sql);
-        return $sites;
-    }
-
     private function checkIfLive()
     {
         $sites = $this->getLiveCheckSites();
@@ -54,12 +39,6 @@ class Testing
         return 0;
     }
 
-    private function getLiveCheckSites()
-    {
-        $sql = "SELECT site_id, address FROM site where check_type = 'l' and is_active = 1";
-        $sites = $this->dbh->query($sql);
-        return $sites;
-    }
 
     private function pingDomain($domain)
     {
@@ -78,11 +57,6 @@ class Testing
         return $status;
     }
 
-    private function insertTestRun($upDown)
-    {
-        $sql = "insert into test_run (up_down, run_ts) values (?, NOW())";
-        $params = array($upDown);
-        $this->dbh->exec($sql, $params);
-    }
+
 
 }
