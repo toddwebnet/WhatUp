@@ -118,7 +118,7 @@ function getChartBlocks()
                     }
                 }
         };
-";
+    ";
 
     $onLoad = "
         var ctx_" . $canvas . " = document.getElementById('" . $canvas . "').getContext('2d');
@@ -129,6 +129,6 @@ function getChartBlocks()
         'JSBlock' => $JSBlock,
         'onLoad' => $onLoad,
         'canvasHTML' => $canvasHTML
-    )
+    );
 
 }
