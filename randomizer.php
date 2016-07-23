@@ -8,6 +8,6 @@ require_once "includes/whatupdb.class.php";
 require_once "includes/testing.class.php";
 require_once "includes/randomizer.class.php";
 
-$obj = new Testing(new Mysql());
-//$obj = new Randomizer(new Mysql());
+//$obj = new Testing(new Mysql());
+$obj = new Randomizer(new Mysql());
 
