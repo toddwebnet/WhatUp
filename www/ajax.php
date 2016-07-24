@@ -18,7 +18,7 @@ if ($_POST['f'] == "loadUpTime")
     {
         $endDate = date("Y-m-d H:i", time());
         $startDate = date("Y-m-d H:i", strtotime($endDate . " - 12 hours"));
-        $dataJunk = $whatUp->getUpTimeGroup('2016-07-01', '2016-07-02', "hour");
+        $dataJunk = $whatUp->getUpTimeGroup($startDate, $endDate, "hour");
         $labels = array();
         $values = array();
         $sum = 0;
@@ -104,7 +104,7 @@ if ($_POST['f'] == "loadSiteStats")
     {
         $endDate = date("Y-m-d H:i", time());
         $startDate = date("Y-m-d H:i", strtotime($endDate . " - 12 hours"));
-        $dataJunk = $whatUp->getSiteStats($_POST['report'], '2016-07-01', '2016-07-02', "hour");
+        $dataJunk = $whatUp->getSiteStats($_POST['report'], $startDate, $endDate, "hour");
         $labels = array();
         $values = array();
         $sum = 0;
@@ -140,7 +140,7 @@ if ($_POST['f'] == "loadSiteStats")
         {
             $count++;
             $sum += $value['percent'];
-            $labels[] = hourLabel($label);
+            $labels[] = weekLabel($label);
             $values[] = $value['percent'];
         }
         $avg = round($sum / $count, 2);

@@ -61,10 +61,11 @@ class WhatupDb
           and s.address = ?
         order by ping_ts";
         $params = array(
-            date("Y-m-d", strtotime($fromDate)),
-            date("Y-m-d", strtotime($toDate)),
+            date("Y-m-d H:i", strtotime($fromDate)),
+            date("Y-m-d H:i", strtotime($toDate)),
             $siteName
         );
+
         $data = $this->dbh->query($sql, $params);
         $r = [];
         foreach ($data as $item)
@@ -115,7 +116,6 @@ class WhatupDb
         $params = array(date("Y-m-d G:i", strtotime($fromDate)), date("Y-m-d G:i", strtotime($toDate)));
         $data = $this->dbh->query($sql, $params);
         $r = [];
-
         foreach ($data as $spec)
         {
             switch ($groupType)

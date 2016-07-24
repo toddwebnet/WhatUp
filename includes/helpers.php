@@ -1,5 +1,5 @@
 <?php
-
+ini_set('date.timezone', 'America/Chicago');
 function print_rr()
 {
     foreach (func_get_args() as $arg) {
