@@ -27,12 +27,3 @@ create table if not exists site_ping
 ALTER TABLE site_ping
   ADD CONSTRAINT fk_site_ping_site FOREIGN KEY (site_id) REFERENCES site_ping (site_id);
 */
-
-insert into site (address, check_type, is_active)
-VALUES
-('google.com', 'l', 1),
-('archive.org', 'l', 1),
-('amazon.com', 'l', 1),
-('hotels.com', 'l', 1),
-('idevcode.com', 'p', 1),
-('kobelcocranesnorthamerica.com', 'p', 1);
