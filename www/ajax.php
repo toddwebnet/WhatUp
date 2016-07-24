@@ -220,9 +220,14 @@ function siteDivHTML($address, $siteName)
     <table style=\"width: 100%\">
         <tr>
             <td style=\"vertical-align: top; text-align: center; width: 33%\" id=\"" . $siteName . "Hourly\">
+            <img src=\"/assets/images/loading.gif\" style=\"width:75px\"/>
             </td>
             <td style=\"vertical-align: top; text-align: center; width: 33%\" id=\"" . $siteName . "Weekly\">
+            <img src=\"/assets/images/loading.gif\" style=\"width:75px\"/>
+            </td>
             <td style=\"vertical-align: top; text-align: center; width: 33%\" id=\"" . $siteName . "Monthly\">
+            <img src=\"/assets/images/loading.gif\" style=\"width:75px\"/>
+            </td>
         </tr>
     </table>
     </div>";

@@ -4,9 +4,6 @@ $(document).ready(function ()
 {
     baseConfig = getBaseConfig();
     baseLoading = getBaseLoading();
-    loadEntity('loadUpTime', 'Hourly', 'upTime');
-    loadEntity('loadUpTime', 'Weekly', 'upTime');
-    loadEntity('loadUpTime', 'Monthly', 'upTime');
     loadSiteBoxes();
 
 
@@ -116,12 +113,16 @@ function loadSiteBoxes()
         cache: false
     }).done(function (data)
     {
+
         html = "";
         for(x=0;x<data.length;x++)
         {
             html += data[x].div;
         }
         $("#siteDivs").html(html);
+        loadEntity('loadUpTime', 'Hourly', 'upTime');
+        loadEntity('loadUpTime', 'Weekly', 'upTime');
+        loadEntity('loadUpTime', 'Monthly', 'upTime');
         for(x=0;x<data.length;x++)
         {
             loadEntity('loadSiteStats', 'Hourly', data[x].siteName);
