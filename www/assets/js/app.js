@@ -24,7 +24,8 @@ function loadEntity(f, mode, report)
         type: "POST",
         data: PostVars,
         dataType: "json",
-        cache: false
+        cache: false,
+        async: false
     }).done(function (data)
     {
         canvasHTMLId = "#" + data.canvas +"Canvas";

@@ -86,7 +86,6 @@ if ($_POST['f'] == "loadUpTime")
         $avg = round($sum / $count, 2);
 
         $array = array(
-            "spot" => "MONTHLY",
             "dataPointLabels" => $labels,
             "dataPointValues" => $values,
             "title" => "WhatUp Host Up Type By Month (" . $avg . ")",
