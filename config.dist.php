@@ -6,3 +6,6 @@ define ("DBUSERNAME", "root");
 define ("DBPASSWORD", "");
 define ("MYSQL_BIN_PATH", "/Applications/MAMP/Library/bin/mysql");
 define ("DB_FILE_PATH", __DIR__ . "/db/imports/");
+define("SMTP_SERVER", "");
+define("SMTP_USERNAME", "");
+define("SMTP_PASSWORD", "");

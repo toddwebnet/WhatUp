@@ -7,8 +7,9 @@ require_once __DIR__ . "/includes/helpers.php";
 require_once __DIR__ . "/includes/mysql.class.php";
 require_once __DIR__ . "/includes/whatupdb.class.php";
 require_once __DIR__ . "/includes/testing.class.php";
-require_once __DIR__ . "/includes/randomizer.class.php";
+require_once __DIR__ . "/includes/notificaions.class.php";
 
-$obj = new Testing(new Mysql());
-//$obj = new Randomizer(new Mysql());
+$dbh = new Mysql();
+$obj = new Testing($dbh);
+$obj = new Notifications($dbh);
 

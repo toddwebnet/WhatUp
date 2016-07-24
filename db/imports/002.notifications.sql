@@ -1,11 +1,10 @@
-create table if not exists notifcation
+create table if not exists notification
 (
   note_id int unsigned auto_increment,
   site_id tinyint,
-  event_start_ts datetime,
-  first_is_sent tinyint,
-  second_is_sent tinyint,
-  third_is_sent tinyint,
+  message_order tinyint,
+  open_date datetime,
+  close_date datetime,
   primary key (note_id)
 );
 

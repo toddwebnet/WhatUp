@@ -11,6 +11,8 @@ create table if not exists site
   site_id int unsigned auto_increment,
   address varchar(32),
   check_type char(1),
+  #'p' for pinging
+  #'i' for checking internet connection
   is_active tinyint,
   primary key (site_id)
 );

@@ -1,5 +1,38 @@
 <?php
 ini_set('date.timezone', 'America/Chicago');
+
+require_once __DIR__ . "/../third_party/PHPMailer/PHPMailerAutoload.php";
+
+function sendMail($to, $subject, $message)
+{
+    $mail = new PHPMailer;
+    $mail->isSMTP();
+    //Enable SMTP debugging
+    // 0 = off (for production use)
+    // 1 = client messages
+    // 2 = client and server messages
+    $mail->SMTPDebug = 0;
+
+    $mail->Debugoutput = 'text';
+    $mail->Host = SMTP_SERVER;
+    $mail->Port = SMTP_PORT;
+    $mail->SMTPAuth = true;
+    $mail->Username = SMTP_USERNAME;
+    $mail->Password = SMTP_PASSWORD;
+    $mail->setFrom(SMTP_USERNAME);
+    $mail->addAddress($to);
+    $mail->Subject = $subject;
+
+    $mail->msgHTML($message);
+    if (!$mail->send()) {
+        return false;
+    } else {
+        return true;
+    }
+
+
+}
+
 function print_rr()
 {
     foreach (func_get_args() as $arg) {
@@ -60,75 +93,28 @@ function ping($host, $timeout = 1)
     return $result;
 }
 
-function getChartBlocks()
+function diffTimeToText($diffTime)
 {
+    $hours = 0;
+    $days = 0;
 
-    $labels = "01, 02, 03";
-    $dataValues = "22,44,11";
-    $title = "title";
-    $label = "Months";
-    $canvas = "canvas";
-    $valueLabel = "value";
-    $JSBlock = "
-    var config_" . $canvas . " = {
-        type: 'line',
-        data: {
-            labels: [" . $labels . "],
-            datasets: [{
-                label: 'Data By Month',
-                data: [" . $dataValues . "],
-                fill: false,
-                borderColor: '#666666',
-                backgroundColor: '#ffffff',
-                pointBorderColor: '#000000',
-                pointBackgroundColor: '#cccccc',
-                pointBorderWidth: 1,
-
-                }]
-        },
-        options: {
-            responsive: true,
-                    title: {
-                display: true,
-                        text: '" . $title . "'
-                    },
-                    tooltips: {
-                mode: 'label',
-                        callbacks: {}
-                    },
-                    hover: {
-                mode: 'dataset'
-                    },
-                    scales: {
-                xAxes: [{
-                    display: true,
-                            scaleLabel: {
-                        display: true,
-                                labelString: '" . $label . "'
-                            }
-                        }],
-                        yAxes: [{
-                    display: true,
-                            scaleLabel: {
-                        display: true,
-                                labelString: '" . $valueLabel . "'
-                            },
-                            ticks: {}
-                        }]
-                    }
-                }
-        };
-    ";
-
-    $onLoad = "
-        var ctx_" . $canvas . " = document.getElementById('" . $canvas . "').getContext('2d');
-        window.myLine = new Chart(ctx_" . $canvas . ", config_" . $canvas . ");
-    ";
-    $canvasHTML = "<canvas id='" . $canvas . "'></canvas>";
-    return array(
-        'JSBlock' => $JSBlock,
-        'onLoad' => $onLoad,
-        'canvasHTML' => $canvasHTML
-    );
+    $minutes = floor($diffTime / 60);
+    if ($minutes > 60) {
+        $hours = floor($minutes / 60);
+        $minutes = $minutes % 60;
+        if ($hours > 24) {
+            $days = floor($hours / 24);
+            $hours = $hours % 24;
+        }
+    }
+    $text = $minutes . " minutes";
+    if ($hours > 0) {
+        $text = $hours . " hours - " . $text;
+    }
+    if ($days > 0) {
+        $text = $days . " days - " . $text;
+    }
+    return $text;
 
 }
+
