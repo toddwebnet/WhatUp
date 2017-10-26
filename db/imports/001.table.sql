@@ -27,5 +27,5 @@ create table if not exists site_ping
 );
 /*
 ALTER TABLE site_ping
-  ADD CONSTRAINT fk_site_ping_site FOREIGN KEY (site_id) REFERENCES site_ping (site_id);
+  ADD CONSTRAINT fk_site_ping_site FOREIGN KEY (site_id) REFERENCES site (site_id);
 */
