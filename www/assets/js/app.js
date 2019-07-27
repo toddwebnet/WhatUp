@@ -14,7 +14,7 @@ function loadEntity(f, mode, report)
     canvasName = report + mode  ;
 
     $("#" + canvasName).html(baseLoading);
-    url2Post = "/ajax.php";
+    url2Post = "ajax.php";
     PostVars = "f=" + f  + "&report=" + report + "&mode=" + mode + "&canvas=" + canvasName;
     $.ajax({
         url: url2Post,
@@ -44,7 +44,7 @@ function loadEntity(f, mode, report)
 
 function getBaseLoading()
 {
-    return "<img src=\"/assets/images/loading.gif\" style=\"width:75px\"/>";
+    return "<img src=\"assets/images/loading.gif\" style=\"width:75px\"/>";
 }
 function getBaseConfig()
 {
@@ -103,7 +103,7 @@ function getBaseConfig()
 
 function loadSiteBoxes()
 {
-    url2Post = "/ajax.php";
+    url2Post = "ajax.php";
     PostVars = "f=loadSiteDivs";
     $.ajax({
         url: url2Post,
