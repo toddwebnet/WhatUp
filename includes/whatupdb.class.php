@@ -33,7 +33,6 @@ class WhatupDb
         $this->dbh->exec($sql, $params);
     }
 
-
     protected function insertPing($siteId, $passFail, $datetime = null)
     {
         if ($datetime == null) {
@@ -90,16 +89,15 @@ class WhatupDb
                 );
             }
             $r[$groupId]['numRuns']++;
-            $r[$groupId]['upTicks'] += ($item['value'] == 0) ? 0 : 1;
-            $r[$groupId]['downTicks'] += ($item['value'] == 0) ? 0 : 1;
-            $r[$groupId]['aggrValues'] += $item['value'];
+            $r[$groupId]['upTicks'] += ($item['value'] <= 0) ? 0 : 1;
+            $r[$groupId]['downTicks'] += ($item['value'] > 0) ? 0 : 1;
+            $r[$groupId]['aggrValues'] += ($item['value'] >= 0) ? 1 : 0;
             $r[$groupId]['percent'] =
                 round(100 * $r[$groupId]['upTicks'] /
                     $r[$groupId]['numRuns'], 4);
             $r[$groupId]['avgTime'] =
                 round($r[$groupId]['aggrValues'] /
                     $r[$groupId]['numRuns'], 0);
-
         }
         return $r;
     }
@@ -136,7 +134,6 @@ class WhatupDb
             $r[$groupId] ['numPasses'] += $spec['up_down'];
 
             $r[$groupId]['percent'] = round(100 * $r[$groupId] ['numPasses'] / $r[$groupId] ['numRuns'], 4);
-
         }
         return $r;
     }
@@ -185,10 +182,10 @@ class WhatupDb
         $params = array($now, $noteId);
         $this->dbh->exec($sql, $params);
     }
+
     protected function getNotification($siteId, $noteId)
     {
-        if(!is_numeric($noteId))
-        {
+        if (!is_numeric($noteId)) {
             $now = date("Y-m-d H:i", time());
             $sql = "insert into notification (site_id, message_order, open_date) values (?, 0, ?)";
             $params = array($siteId, $now);
@@ -223,6 +220,5 @@ class WhatupDb
         $sql = "update notification set message_count = message_count + 1 where ?";
         $params = array($noteId);
         $this->dbh->exec($sql, $params);
-
     }
 }
