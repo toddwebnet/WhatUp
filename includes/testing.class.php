@@ -1,6 +1,5 @@
 <?php
 
-
 class Testing extends WhatupDb
 {
 
@@ -19,7 +18,7 @@ class Testing extends WhatupDb
         print "Testing Sites:\n";
         foreach ($sites as $site) {
             print "  " . $site["address"] . " - ";
-            $passFail=  $this->pingDomain( $site["address"]);
+            $passFail = $this->pingDomain($site["address"]);
             print ($passFail >= 0) ? "pass" : "fail";
             print "\n";
             $this->insertPing($site["site_id"], $passFail);
@@ -39,13 +38,16 @@ class Testing extends WhatupDb
         return 0;
     }
 
-
     private function pingDomain($domain)
     {
         $starttime = microtime(true);
         $errno = null;
         $errstr = null;
-        $file = fsockopen($domain, 80, $errno, $errstr, 10);
+        $port = 80;
+        if (strpos($domain, ':')) {
+            list($domain, $port) = explode(':', $domain);
+        }
+        $file = fsockopen($domain, $port, $errno, $errstr, 10);
         $stoptime = microtime(true);
         $status = 0;
         if (!$file) $status = -1;  // Site is down
@@ -56,7 +58,5 @@ class Testing extends WhatupDb
         }
         return $status;
     }
-
-
 
 }
